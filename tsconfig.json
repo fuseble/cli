@@ -6,7 +6,8 @@
     "esModuleInterop": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "outDir": "bin"
+    "outDir": "bin",
+    "noImplicitAny": false
   },
   "include": ["src/**/*"]
 }

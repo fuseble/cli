@@ -61,7 +61,8 @@ class TemplateCLI {
     static getTemplateInfos() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { data } = yield axios_1.default.get("https://raw.githubusercontent.com/outqource/outqource-template/dev/cli.json");
+                const url = "https://raw.githubusercontent.com/fuseble/template/main/cli.json";
+                const { data } = yield axios_1.default.get(url);
                 return data;
             }
             catch (error) {
@@ -91,8 +92,8 @@ class TemplateCLI {
                     return [pathArray.join("/"), pathArray.join("-")];
                 })();
                 (0, utils_1.getSubdirectoryFromGithub)({
-                    orgainzation: "outqource",
-                    repository: "outqource-template",
+                    orgainzation: "fuseble",
+                    repository: "template",
                     projectName: options.name,
                     branch: options.branch,
                     src: path,

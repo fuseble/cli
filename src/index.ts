@@ -1,7 +1,8 @@
 import "./console";
 import TemplateCLI from "./template";
+import OpenAPICLI from "./openapi";
 
-const CLI_COMMANDS = ["template"];
+const CLI_COMMANDS = ["template", "openapi"];
 
 class CLI {
   private command: string | undefined;
@@ -26,10 +27,14 @@ class CLI {
   }
 
   public async getOptions() {
+    let options: any = {};
     switch (this.command) {
       case "template":
-        const options = await TemplateCLI.getOptions();
+        options = await TemplateCLI.getOptions();
         await TemplateCLI.cloneTemplate(options);
+        break;
+      case "openapi":
+        await OpenAPICLI.writeOpenAPIFunctions();
         break;
       default:
         console.log(`Invalid command provided`);

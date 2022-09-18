@@ -11,7 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./console");
 const template_1 = require("./template");
-const CLI_COMMANDS = ["template"];
+const openapi_1 = require("./openapi");
+const CLI_COMMANDS = ["template", "openapi"];
 class CLI {
     constructor() {
         this.validateCommand();
@@ -31,10 +32,14 @@ class CLI {
     }
     getOptions() {
         return __awaiter(this, void 0, void 0, function* () {
+            let options = {};
             switch (this.command) {
                 case "template":
-                    const options = yield template_1.default.getOptions();
+                    options = yield template_1.default.getOptions();
                     yield template_1.default.cloneTemplate(options);
+                    break;
+                case "openapi":
+                    yield openapi_1.default.writeOpenAPIFunctions();
                     break;
                 default:
                     console.log(`Invalid command provided`);
