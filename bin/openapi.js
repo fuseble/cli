@@ -159,7 +159,7 @@ class OpenAPICLI {
                     console.log(err);
                     process.exit(1);
                 }
-                console.log(`OpenAPI functions written to ${options.path}.ts`);
+                console.log(`OpenAPI functions written to ${options.path}`);
             });
         });
     }
