@@ -1,9 +1,15 @@
 # @fuseble.inc/cli
 
 ```shell
-npx @fuseble.inc/cli
-  -t --template <template>
-  -s --stack <stack>
-  -n --name <name>
-  -b --branch <branch>
+npx @fuseble.inc/cli <COMMAND> <OPTIONS>
+```
+
+## Template
+
+```shell
+npx @fuseble.inc/cli template \
+--stack <STACK> \
+--template <TEMPLATE> \
+--name <NAME> \
+--branch <BRANCH>
 ```
