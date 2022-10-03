@@ -1,9 +1,9 @@
 {
-  "name": "@fuseble.inc/cli",
+  "name": "fuseble-cli",
   "version": "1.0.18",
   "main": "bin/index.js",
   "bin": {
-    "@fuseble.inc/cli": "bin/index.js"
+    "fuseble-cli": "bin/index.js"
   },
   "license": "MIT",
   "private": false,
