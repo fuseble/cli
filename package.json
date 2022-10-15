@@ -1,6 +1,6 @@
 {
   "name": "fuseble-cli",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "main": "bin/index.js",
   "bin": {
     "fuseble-cli": "bin/index.js"
