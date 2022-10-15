@@ -28,7 +28,7 @@ export default class TemplateCLI {
         alias: "b",
         describe: "Branch to use",
         type: "string",
-        default: "dev",
+        default: "main",
       },
       print: {
         alias: "p",

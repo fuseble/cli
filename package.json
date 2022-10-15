@@ -1,6 +1,6 @@
 {
   "name": "fuseble-cli",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "main": "bin/index.js",
   "bin": {
     "fuseble-cli": "bin/index.js"
@@ -22,10 +22,12 @@
     "camelcase": "6.3.0",
     "chalk": "4.1.2",
     "execa": "^6.1.0",
+    "flat": "^5.0.2",
     "fs-extra": "^10.1.0",
     "yargs": "^17.5.1"
   },
   "devDependencies": {
+    "@types/flat": "^5.0.2",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.0.3",
     "@types/yargs": "^17.0.10",
