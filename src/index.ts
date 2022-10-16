@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
-import TemplateCLI from "./template";
 import OpenAPICLI from "./openapi";
 import TerraformCLI from "./terraform";
+import TemplateCLI from "./template";
 
 const CLI_COMMANDS: string[] = ["template", "openapi", "terraform"];
 
