@@ -10,7 +10,7 @@
         "name": "<ROOT_DOMAIN>"
     },
     "route53_record": {
-        "name": "<RECORD_NAME>",
+        "name": "<RECORD_DOMAIN>",
         "type": "A",
         "ttl": 60
     },
