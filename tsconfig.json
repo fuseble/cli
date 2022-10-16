@@ -3,10 +3,14 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitAny": true,
-    "outDir": "bin",
-  }
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "resolveJsonModule": true,
+    "outDir": "bin"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "bin"]
 }

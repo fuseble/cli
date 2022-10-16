@@ -44,14 +44,17 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPatch = exports.createDelete = exports.createPut = exports.createPost = void 0;
-var axios_1 = require("axios");
-var yargs = require("yargs");
-var chalk = require("chalk");
-var camelcase = require("camelcase");
-var fs = require("fs");
-var createAxiosClient = function (urls) { return "\nimport axios from 'axios';\nimport qs from 'qs';\n\nconst apiClient = axios.create({\n  baseURL: '".concat(urls[0], "',\n  timeout: 1000 * 5,\n});\n\napiClient.defaults.paramsSerializer = params => {\n  return qs.stringify(params);\n}\n"); };
+var axios_1 = __importDefault(require("axios"));
+var yargs_1 = __importDefault(require("yargs"));
+var chalk_1 = __importDefault(require("chalk"));
+var camelcase_1 = __importDefault(require("camelcase"));
+var fs_1 = __importDefault(require("fs"));
+var createAxiosClient = function (urls) { return "\nimport axios from 'axios';\nimport qs from 'qs';\n\nconst apiClient = axios.create({\n  baseURL: '".concat(urls[0], "',\n  timeout: 1000 * 5,\n});\n"); };
 var getApiFunctionName = function (method, url) {
     var splitUrl = url.split("/").map(function (part) {
         if (part.includes("{") && part.includes("}")) {
@@ -60,7 +63,7 @@ var getApiFunctionName = function (method, url) {
         }
         return part;
     });
-    return camelcase(__spreadArray([method], splitUrl, true));
+    return (0, camelcase_1.default)(__spreadArray([method], splitUrl, true));
 };
 var getApiUrlParams = function (url) {
     return url
@@ -112,7 +115,7 @@ var OpenAPICLI = /** @class */ (function () {
             var options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, yargs.usage(chalk.cyan("")).options({
+                    case 0: return [4 /*yield*/, yargs_1.default.usage(chalk_1.default.cyan("")).options({
                             url: {
                                 alias: "u",
                                 describe: "URL of the OpenAPI",
@@ -201,7 +204,7 @@ var OpenAPICLI = /** @class */ (function () {
                     case 2:
                         openapi = _a.sent();
                         functions = this.parseOpenAPI(openapi);
-                        fs.writeFile("".concat(options.path) || "./service.ts", functions, function (err) {
+                        fs_1.default.writeFile("".concat(options.path) || "./service.ts", functions, function (err) {
                             if (err) {
                                 console.log(err);
                                 process.exit(1);

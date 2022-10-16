@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
-import * as yargs from "yargs";
-import * as chalk from "chalk";
-import * as camelcase from "camelcase";
-import * as fs from "fs";
+import yargs from "yargs";
+import chalk from "chalk";
+import camelcase from "camelcase";
+import fs from "fs";
 
 const createAxiosClient = (urls: string[]) => `
 import axios from 'axios';
@@ -12,10 +12,6 @@ const apiClient = axios.create({
   baseURL: '${urls[0]}',
   timeout: 1000 * 5,
 });
-
-apiClient.defaults.paramsSerializer = params => {
-  return qs.stringify(params);
-}
 `;
 
 const getApiFunctionName = (method: string, url: string) => {

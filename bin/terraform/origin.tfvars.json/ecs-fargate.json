@@ -1,0 +1,288 @@
+{
+    "name": "<SERVICE_NAME>",
+    "instance_count": "<INSTANCE_COUNT>",
+    "port": "<PORT>",
+    "ecr_repository": "<ECR_REPO>",
+    "iam_role": "<SERVICE_NAME>-iam-role",
+    "root_domain": "<ROOT_DOMAIN>",
+    "record_domain": "<RECORD_DOMAIN>",
+    "min_capacity": "<MIN_CAPACITY>",
+    "max_capacity": "<MAX_CAPACITY>",
+    "instance_cpu": "<INSTANCE_CPU>",
+    "instance_memory": "<INSTANCE_MEMORY>",
+    "container_cpu": "<CONTAINER_CPU>",
+    "container_memory": "<CONTAINER_MEMORY>",
+    "aws_region": "<REGION>",
+    "aws_profile": "<PROFILE>",
+    "aws_provider": {
+        "region": "<REGION>",
+        "profile": "<PROFILE>"
+    },
+    "aws_vpc": {
+        "cidr_block": "<VPC_CIDR>",
+        "enable_dns_hostnames": true,
+        "enable_dns_support": true,
+        "instance_tenancy": "default",
+        "tags": {
+            "Name": "<SERVICE_NAME>-vpc"
+        }
+    },
+    "aws_subnet": {
+        "count": "<INSTANCE_COUNT>",
+        "availability_zone": "<AVAILABILITY_ZONE>",
+        "private_subnet": {
+            "Name": "<SERVICE_NAME>-private-subnet-"
+        },
+        "public_subnet": {
+            "Name": "<SERVICE_NAME>-public-subnet-"
+        }
+    },
+    "aws_internet_gateway": {
+        "name": "<SERVICE_NAME>-igw",
+        "tags": {
+            "Name": "<SERVICE_NAME>-igw"
+        }
+    },
+    "aws_route": {
+        "destination_cidr_block": "0.0.0.0/0"
+    },
+    "aws_eip": {
+        "count": "<INSTANCE_COUNT>",
+        "vpc": true,
+        "tags": {
+            "Name": "<SERVICE_NAME>-eip-"
+        }
+    },
+    "aws_nat_gateway": {
+        "count": "<INSTANCE_COUNT>"
+    },
+    "aws_route_table": {
+        "count": "<INSTANCE_COUNT>",
+        "route": {
+            "cidr_block": "0.0.0.0/0"
+        }
+    },
+    "aws_route_table_association": {
+        "count": "<INSTANCE_COUNT>"
+    },
+    "aws_ecr_repository": {
+        "name": "<SERVICE_NAME>-repository"
+    },
+    "aws_ecs_cluster": {
+        "name": "<SERVICE_NAME>-cluster"
+    },
+    "aws_ecs_task_definition": {
+        "family": "<SERVICE_NAME>-task-definition",
+        "requires_compatibilities": ["FARGATE"],
+        "cpu": "<INSTANCE_CPU>",
+        "memory": "<INSTANCE_MEMORY>",
+        "network_mode": "awsvpc",
+        "container_definitions": {
+            "name": "<SERVICE_NAME>-container",
+            "essential": true,
+            "cpu": "<CONTAINER_CPU>",
+            "memory": "<CONTAINER_MEMORY>",
+            "portMappings": {
+                "containerPort": "<PORT>",
+                "hostPort": "<PORT>",
+                "protocol": "tcp"
+            },
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/<SERVICE_NAME>-log-group",
+                    "awslogs-region": "<REGION>",
+                    "awslogs-stream-prefix": "/<SERVICE_NAME>-log-stream"
+                }
+            }
+        }
+    },
+    "aws_ecs_service": {
+        "name": "<SERVICE_NAME>-service",
+        "desired_count": 2,
+        "launch_type": "FARGATE",
+        "network_configuration": {
+            "assign_public_ip": true
+        },
+        "load_balancer": {
+            "container_name": "<SERVICE_NAME>-container",
+            "container_port": "<PORT>"
+        }
+    },
+    "aws_acm_certificate": {
+        "domain": "<ROOT_DOMAIN>"
+    },
+    "aws_route53_zone": {
+        "name": "<ROOT_DOMAIN>"
+    },
+    "aws_route53_record": {
+        "name": "<RECORD_DOMAIN>",
+        "type": "A",
+        "alias": {
+            "evaluate_target_health": false
+        }
+    },
+    "aws_alb_target_group": {
+        "name": "<SERVICE_NAME>-target-group",
+        "port": 80,
+        "protocol": "HTTP",
+        "target_type": "ip",
+        "health_check": {
+            "path": "/",
+            "protocol": "HTTP",
+            "interval": "30",
+            "timeout": "3",
+            "healthy_threshold": "5",
+            "unhealthy_threshold": "2",
+            "matcher": "200"
+        }
+    },
+    "aws_alb_listener": {
+        "http": {
+            "port": "80",
+            "protocol": "HTTP",
+            "default_action": {
+                "type": "redirect",
+                "redirect": {
+                    "port": "443",
+                    "protocol": "HTTPS",
+                    "status_code": "HTTP_301"
+                }
+            }
+        },
+        "https": {
+            "port": "443",
+            "protocol": "HTTPS",
+            "ssl_policy": "ELBSecurityPolicy-2016-08",
+            "lifecycle": {
+                "create_before_destroy": true
+            },
+            "default_action": {
+                "type": "forward"
+            }
+        }
+    },
+    "aws_cloudwatch_log_group": {
+        "name": "/<SERVICE_NAME>-log-group",
+        "retention_in_days": 30,
+        "tags": {
+            "Name": "<SERVICE_NAME>-log-group"
+        }
+    },
+    "aws_cloudwatch_log_stream": {
+        "name": "<SERVICE_NAME>-log-stream"
+    },
+    "aws_appautoscaling_target": {
+        "service_namespace": "ecs",
+        "scalable_dimension": "ecs:service:DesiredCount",
+        "min_capacity": "<MIN_CAPACITY>",
+        "max_capacity": "<MAX_CAPACITY>"
+    },
+    "aws_appautoscaling_policy": {
+        "up": {
+            "name": "<SERVICE_NAME>-up-policy",
+            "service_namespace": "ecs",
+            "scalable_dimension": "ecs:service:DesiredCount",
+            "step_scaling_policy_configuration": {
+                "adjustment_type": "ChangeInCapacity",
+                "cooldown": 60,
+                "metric_aggregation_type": "Maximum",
+                "step_adjustment": {
+                    "metric_interval_lower_bound": 0,
+                    "scaling_adjustment": 1
+                }
+            }
+        },
+        "down": {
+            "name": "<SERVICE_NAME>-down-policy",
+            "service_namespace": "ecs",
+            "scalable_dimension": "ecs:service:DesiredCount",
+            "step_scaling_policy_configuration": {
+                "adjustment_type": "ChangeInCapacity",
+                "cooldown": 60,
+                "metric_aggregation_type": "Maximum",
+                "step_adjustment": {
+                    "metric_interval_upper_bound": 0,
+                    "scaling_adjustment": -1
+                }
+            }
+        }
+    },
+    "aws_cloudwatch_metric_alarm": {
+        "high": {
+            "alert_name": "<SERVICE_NAME>-cpu-high-alarm",
+            "comparison_operator": "GreaterThanOrEqualToThreshold",
+            "evaluation_periods": "2",
+            "metric_name": "CPUUtilization",
+            "namespace": "AWS/ECS",
+            "period": "60",
+            "statistic": "Average",
+            "threshold": "85"
+        },
+        "low": {
+            "alert_name": "<SERVICE_NAME>-cpu-low-alarm",
+            "comparison_operator": "LessThanOrEqualToThreshold",
+            "evaluation_periods": "2",
+            "metric_name": "CPUUtilization",
+            "namespace": "AWS/ECS",
+            "period": "60",
+            "statistic": "Average",
+            "threshold": "15"
+        }
+    },
+    "aws_security_group": {
+        "public": {
+            "name": "<SERVICE_NAME>-public-sg",
+            "description": "Controls access to the ALB <SERVICE_NAME>",
+            "container_ingress": {
+                "from_port": "<PORT>",
+                "to_port": "<PORT>",
+                "protocol": "tcp",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "database_ingress": {
+                "from_port": "<DATABASE_PORT>",
+                "to_port": "<DATABASE_PORT>",
+                "protocol": "tcp",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "egress": {
+                "from_port": 0,
+                "to_port": 0,
+                "protocol": "-1",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "lifecycle": {
+                "create_before_destroy": true
+            }
+        },
+        "private": {
+            "name": "<SERVICE_NAME>-private-sg",
+            "description": "Controls access to the ECS <SERVICE_NAME>",
+            "container_ingress": {
+                "from_port": "<PORT>",
+                "to_port": "<PORT>",
+                "protocol": "tcp",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "database_ingress": {
+                "from_port": "<DATABASE_PORT>",
+                "to_port": "<DATABASE_PORT>",
+                "protocol": "tcp",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "egress": {
+                "from_port": 0,
+                "to_port": 0,
+                "protocol": "-1",
+                "cidr_blocks": ["0.0.0.0/0"]
+            },
+            "lifecycle": {
+                "create_before_destroy": true
+            }
+        }
+    },
+    "aws_alb": {
+        "name": "<SERVICE_NAME>-alb"
+    }
+}

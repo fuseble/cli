@@ -19,6 +19,7 @@ export const checkFolder = (path: string | string[]): boolean => {
 };
 
 export const moveFolder = (src: string, dest: string) => {
+  console.log(`Moving ${src} to ${dest}`);
   fs.moveSync(src, dest, { overwrite: true });
 };
 
@@ -38,7 +39,10 @@ export const getSubdirectoryFromGithub = ({
     execSync(
       `git clone https://github.com/${orgainzation}/${repository} ${projectName}`
     );
-    execSync(`cd ${projectName} && git checkout ${branch} && cd ../`);
+
+    if (branch !== "main") {
+      execSync(`cd ${projectName} && git checkout ${branch} && cd ../`);
+    }
 
     const isExist = checkFolder(src);
     if (!isExist) {

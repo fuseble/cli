@@ -2,7 +2,8 @@ import yargs from "yargs";
 import chalk from "chalk";
 import { flatten, unflatten } from "flat";
 import fsExtra from "fs-extra";
-import ecsFargateJson from "./origin.tfvars.json/ecs-fargate.json";
+import ecsFargateJson from "./terraform/origin.tfvars.json/ecs-fargate.json";
+import s3WebJson from "./terraform/origin.tfvars.json/s3-web.json";
 
 export default class TerraformCLI {
   public static async getOptions() {
@@ -116,6 +117,61 @@ export default class TerraformCLI {
 
       return options;
     }
+
+    if (templateOptions.template === "s3-web") {
+      const options = await yargs.usage(chalk.cyan("S3 Web Options")).options({
+        template: {
+          type: "string",
+          requiresArg: true,
+        },
+        profile: {
+          type: "string",
+          default: "default",
+          requiresArg: true,
+        },
+        region: {
+          type: "string",
+          default: "ap-northeast-2",
+        },
+        bucket: {
+          type: "string",
+          requiresArg: true,
+        },
+        "cloudfront-comment": {
+          alias: "comment",
+          type: "string",
+        },
+        "root-domain": {
+          alias: "root",
+          type: "string",
+          requiresArg: true,
+        },
+        "record-domain": {
+          alias: "record",
+          type: "string",
+          requiresArg: true,
+        },
+      }).argv;
+
+      if (!options.bucket) {
+        console.log(`Please provide a bucket name`);
+        process.exit(1);
+      }
+      if (!options.cloudfrontComment) {
+        options.cloudfrontComment = `S3 Web Hosting for ${options.bucket} by Terraform`;
+      }
+      if (!options.rootDomain || !options.recordDomain) {
+        console.log("Please provide root and record domain");
+        process.exit(1);
+      }
+
+      return options;
+    }
+
+    if (!templateOptions.template) {
+      console.log(`Please provide a template name`);
+      process.exit(1);
+    }
   }
 
   public static writeECSFargateTFVars(argv) {
@@ -188,9 +244,49 @@ export default class TerraformCLI {
     }
   }
 
+  public static writeS3WebTFVars(argv) {
+    const flattenFile = flatten(s3WebJson) as Record<string, any>;
+    for (const [key, value] of Object.entries(flattenFile)) {
+      if (
+        typeof value !== "string" ||
+        !value.includes("<") ||
+        !value.includes(">")
+      )
+        continue;
+
+      if (value.includes("<REGION>")) {
+        flattenFile[key] = value.replace("<REGION>", argv.region);
+      }
+      if (value.includes("<PROFILE>")) {
+        flattenFile[key] = argv.profile;
+      }
+      if (value.includes("<BUCKET_NAME>")) {
+        flattenFile[key] = value.replace("<BUCKET_NAME>", argv.bucket);
+      }
+      if (value.includes("<CLOUDFRONT_COMMENT>")) {
+        flattenFile[key] = argv.cloudfrontComment;
+      }
+      if (value.includes("<ROOT_DOMAIN>")) {
+        flattenFile[key] = value.replace("<ROOT_DOMAIN>", argv.rootDomain);
+      }
+      if (value.includes("<RECORD_DOMAIN>")) {
+        flattenFile[key] = value.replace("<RECORD_DOMAIN>", argv.recordDomain);
+      }
+
+      const newConfig = unflatten(flattenFile);
+
+      fsExtra.writeJsonSync(`./variables.tfvars.json`, newConfig, {
+        spaces: 2,
+      });
+    }
+  }
+
   public static writeTFVars(argv) {
     if (argv.template === "ecs-fargate") {
       this.writeECSFargateTFVars(argv);
+    }
+    if (argv.template === "s3-web") {
+      this.writeS3WebTFVars(argv);
     }
   }
 }

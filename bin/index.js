@@ -36,10 +36,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var template_1 = require("./template");
-var openapi_1 = require("./openapi");
-var CLI_COMMANDS = ["template", "openapi"];
+var template_1 = __importDefault(require("./template"));
+var openapi_1 = __importDefault(require("./openapi"));
+var terraform_1 = __importDefault(require("./terraform"));
+var CLI_COMMANDS = ["template", "openapi", "terraform"];
 var CLI = /** @class */ (function () {
     function CLI() {
         this.validateCommand();
@@ -68,24 +72,30 @@ var CLI = /** @class */ (function () {
                         switch (_a) {
                             case "template": return [3 /*break*/, 1];
                             case "openapi": return [3 /*break*/, 4];
+                            case "terraform": return [3 /*break*/, 6];
                         }
-                        return [3 /*break*/, 6];
+                        return [3 /*break*/, 8];
                     case 1: return [4 /*yield*/, template_1.default.getOptions()];
                     case 2:
                         options = _b.sent();
                         return [4 /*yield*/, template_1.default.cloneTemplate(options)];
                     case 3:
                         _b.sent();
-                        return [3 /*break*/, 7];
+                        return [3 /*break*/, 9];
                     case 4: return [4 /*yield*/, openapi_1.default.writeOpenAPIFunctions()];
                     case 5:
                         _b.sent();
-                        return [3 /*break*/, 7];
-                    case 6:
+                        return [3 /*break*/, 9];
+                    case 6: return [4 /*yield*/, terraform_1.default.getOptions()];
+                    case 7:
+                        options = _b.sent();
+                        terraform_1.default.writeTFVars(options);
+                        return [3 /*break*/, 9];
+                    case 8:
                         console.log("Invalid command provided");
                         process.exit(1);
-                        _b.label = 7;
-                    case 7: return [2 /*return*/];
+                        _b.label = 9;
+                    case 9: return [2 /*return*/];
                 }
             });
         });

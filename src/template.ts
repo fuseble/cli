@@ -1,7 +1,8 @@
 import axios from "axios";
-import * as yargs from "yargs";
-import * as chalk from "chalk";
+import yargs from "yargs";
+import chalk from "chalk";
 import { getSubdirectoryFromGithub } from "./utils";
+import { nanoid } from "nanoid";
 
 export default class TemplateCLI {
   constructor() {}
@@ -22,7 +23,6 @@ export default class TemplateCLI {
         alias: "n",
         describe: "Name of the project",
         type: "string",
-        default: "outqource-template",
       },
       branch: {
         alias: "b",
@@ -80,20 +80,22 @@ export default class TemplateCLI {
     return true;
   }
 
-  public static async cloneTemplate(options: any) {
+  public static async cloneTemplate(options) {
     try {
+      const tempProjectName = nanoid(10);
+
       const [path, newPath] = (() => {
-        const pathArray = [options.name, options.stack, options.template];
-        return [pathArray.join("/"), pathArray.join("-")];
+        const pathArray = [tempProjectName, options.stack, options.template];
+        return [pathArray.join("/"), `${options.stack}-${options.template}`];
       })();
 
       getSubdirectoryFromGithub({
         orgainzation: "fuseble",
         repository: "template",
-        projectName: options.name,
+        projectName: tempProjectName,
         branch: options.branch,
         src: path,
-        dest: newPath,
+        dest: options.name || newPath,
       });
     } catch (error) {
       console.error(error);

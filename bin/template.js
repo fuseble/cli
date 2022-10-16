@@ -35,11 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var axios_1 = require("axios");
-var yargs = require("yargs");
-var chalk = require("chalk");
+var axios_1 = __importDefault(require("axios"));
+var yargs_1 = __importDefault(require("yargs"));
+var chalk_1 = __importDefault(require("chalk"));
 var utils_1 = require("./utils");
+var nanoid_1 = require("nanoid");
 var TemplateCLI = /** @class */ (function () {
     function TemplateCLI() {
     }
@@ -48,7 +52,7 @@ var TemplateCLI = /** @class */ (function () {
             var options;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, yargs.usage(chalk.cyan("")).options({
+                    case 0: return [4 /*yield*/, yargs_1.default.usage(chalk_1.default.cyan("")).options({
                             stack: {
                                 alias: "s",
                                 describe: "Stack to use",
@@ -63,13 +67,12 @@ var TemplateCLI = /** @class */ (function () {
                                 alias: "n",
                                 describe: "Name of the project",
                                 type: "string",
-                                default: "outqource-template",
                             },
                             branch: {
                                 alias: "b",
                                 describe: "Branch to use",
                                 type: "string",
-                                default: "dev",
+                                default: "main",
                             },
                             print: {
                                 alias: "p",
@@ -139,20 +142,21 @@ var TemplateCLI = /** @class */ (function () {
     };
     TemplateCLI.cloneTemplate = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, path, newPath;
+            var tempProjectName_1, _a, path, newPath;
             return __generator(this, function (_b) {
                 try {
+                    tempProjectName_1 = (0, nanoid_1.nanoid)(10);
                     _a = (function () {
-                        var pathArray = [options.name, options.stack, options.template];
-                        return [pathArray.join("/"), pathArray.join("-")];
+                        var pathArray = [tempProjectName_1, options.stack, options.template];
+                        return [pathArray.join("/"), "".concat(options.stack, "-").concat(options.template)];
                     })(), path = _a[0], newPath = _a[1];
                     (0, utils_1.getSubdirectoryFromGithub)({
                         orgainzation: "fuseble",
                         repository: "template",
-                        projectName: options.name,
+                        projectName: tempProjectName_1,
                         branch: options.branch,
                         src: path,
-                        dest: newPath,
+                        dest: options.name || newPath,
                     });
                 }
                 catch (error) {

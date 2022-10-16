@@ -1,0 +1,20 @@
+{
+    "aws_provider": {
+        "region": "<REGION>",
+        "profile": "<PROFILE>"
+    },
+    "s3_bucket": {
+        "bucket": "<BUCKET_NAME>"
+    },
+    "route53_zone": {
+        "name": "<ROOT_DOMAIN>"
+    },
+    "route53_record": {
+        "name": "<RECORD_NAME>",
+        "type": "A",
+        "ttl": 60
+    },
+    "cloudfront_distribution": {
+        "comment": "<CLOUDFRONT_COMMENT>"
+    }
+}
