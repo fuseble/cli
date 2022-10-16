@@ -1,8 +1,8 @@
 import axios from "axios";
 import yargs from "yargs";
 import chalk from "chalk";
-import { getSubdirectoryFromGithub } from "./utils";
 import { nanoid } from "nanoid";
+import { getSubdirectoryFromGithub } from "./utils";
 
 export default class TemplateCLI {
   constructor() {}

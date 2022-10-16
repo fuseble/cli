@@ -2,8 +2,8 @@ import yargs from "yargs";
 import chalk from "chalk";
 import { flatten, unflatten } from "flat";
 import fsExtra from "fs-extra";
-import ecsFargateJson from "./terraform/origin.tfvars.json/ecs-fargate.json";
-import s3WebJson from "./terraform/origin.tfvars.json/s3-web.json";
+import ecsFargateJson from "./config/origin.tfvars.json/ecs-fargate.json";
+import s3WebJson from "./config/origin.tfvars.json/s3-web.json";
 
 export default class TerraformCLI {
   public static async getOptions() {
