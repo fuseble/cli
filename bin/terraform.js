@@ -43,8 +43,8 @@ var yargs_1 = __importDefault(require("yargs"));
 var chalk_1 = __importDefault(require("chalk"));
 var flat_1 = require("flat");
 var fs_extra_1 = __importDefault(require("fs-extra"));
-var ecs_fargate_json_1 = __importDefault(require("./terraform/origin.tfvars.json/ecs-fargate.json"));
-var s3_web_json_1 = __importDefault(require("./terraform/origin.tfvars.json/s3-web.json"));
+var ecs_fargate_json_1 = __importDefault(require("./config/origin.tfvars.json/ecs-fargate.json"));
+var s3_web_json_1 = __importDefault(require("./config/origin.tfvars.json/s3-web.json"));
 var TerraformCLI = /** @class */ (function () {
     function TerraformCLI() {
     }

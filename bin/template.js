@@ -42,8 +42,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
 var yargs_1 = __importDefault(require("yargs"));
 var chalk_1 = __importDefault(require("chalk"));
-var utils_1 = require("./utils");
 var nanoid_1 = require("nanoid");
+var utils_1 = require("./utils");
 var TemplateCLI = /** @class */ (function () {
     function TemplateCLI() {
     }

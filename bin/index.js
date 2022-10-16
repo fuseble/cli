@@ -40,9 +40,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var template_1 = __importDefault(require("./template"));
 var openapi_1 = __importDefault(require("./openapi"));
 var terraform_1 = __importDefault(require("./terraform"));
+var template_1 = __importDefault(require("./template"));
 var CLI_COMMANDS = ["template", "openapi", "terraform"];
 var CLI = /** @class */ (function () {
     function CLI() {
