@@ -27,12 +27,12 @@ export default class PrismaCLI {
     const files = await this.getFiles(path);
     const result = await this.getPrismaFiles(files);
 
-    const prismaFileExist = fs.existsSync("schema.prisma");
+    const prismaFileExist = fs.existsSync("prisma/schema.prisma");
     if (prismaFileExist) {
-      fs.unlinkSync("schema.prisma");
+      fs.unlinkSync("prisma/schema.prisma");
     }
 
-    fs.writeFileSync("schema.prisma", result, "utf8");
+    fs.writeFileSync("prisma/schema.prisma", result, "utf8");
   }
 
   public static async getFiles(path: string) {

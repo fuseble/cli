@@ -16,6 +16,12 @@ npx fuseble-cli template \
 npx fuseble-cli openapi --url=https://localhost:8000/api-json
 ```
 
+## Prisma
+
+```shell
+npx fuseble-cli prisma --path=prisma/modules
+```
+
 ## Terraform
 
 ### ECS Fargate
