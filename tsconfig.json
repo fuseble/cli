@@ -9,7 +9,8 @@
     "noImplicitAny": false,
     "noImplicitThis": false,
     "resolveJsonModule": true,
-    "outDir": "bin"
+    "outDir": "bin",
+    "skipDefaultLibCheck": false
   },
   "include": ["src/*.ts", "src/**/*.json"],
   "exclude": ["node_modules", "bin"]

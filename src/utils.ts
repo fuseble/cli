@@ -1,5 +1,7 @@
 import * as fs from "fs-extra";
+import { readdir } from "fs/promises";
 import { execSync } from "child_process";
+import { resolve } from "path";
 
 interface IGetSubdirectoriesFromGithub {
   orgainzation: string;
@@ -25,6 +27,18 @@ export const moveFolder = (src: string, dest: string) => {
 
 export const removeFolder = (path: string) => {
   fs.removeSync(path);
+};
+
+export const getFiles = async (dir: string) => {
+  const dirents = await readdir(dir, { withFileTypes: true });
+
+  const files = await Promise.all(
+    dirents.map((dirent) => {
+      const res = resolve(dir, dirent.name);
+      return dirent.isDirectory() ? getFiles(res) : res;
+    })
+  );
+  return Array.prototype.concat(...files);
 };
 
 export const getSubdirectoryFromGithub = ({

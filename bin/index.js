@@ -43,7 +43,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var openapi_1 = __importDefault(require("./openapi"));
 var terraform_1 = __importDefault(require("./terraform"));
 var template_1 = __importDefault(require("./template"));
-var CLI_COMMANDS = ["template", "openapi", "terraform"];
+var prisma_1 = __importDefault(require("./prisma"));
+var CLI_COMMANDS = ["template", "openapi", "terraform", "prisma"];
 var CLI = /** @class */ (function () {
     function CLI() {
         this.validateCommand();
@@ -73,29 +74,37 @@ var CLI = /** @class */ (function () {
                             case "template": return [3 /*break*/, 1];
                             case "openapi": return [3 /*break*/, 4];
                             case "terraform": return [3 /*break*/, 6];
+                            case "prisma": return [3 /*break*/, 8];
                         }
-                        return [3 /*break*/, 8];
+                        return [3 /*break*/, 11];
                     case 1: return [4 /*yield*/, template_1.default.getOptions()];
                     case 2:
                         options = _b.sent();
                         return [4 /*yield*/, template_1.default.cloneTemplate(options)];
                     case 3:
                         _b.sent();
-                        return [3 /*break*/, 9];
+                        return [3 /*break*/, 12];
                     case 4: return [4 /*yield*/, openapi_1.default.writeOpenAPIFunctions()];
                     case 5:
                         _b.sent();
-                        return [3 /*break*/, 9];
+                        return [3 /*break*/, 12];
                     case 6: return [4 /*yield*/, terraform_1.default.getOptions()];
                     case 7:
                         options = _b.sent();
                         terraform_1.default.writeTFVars(options);
-                        return [3 /*break*/, 9];
-                    case 8:
+                        return [3 /*break*/, 12];
+                    case 8: return [4 /*yield*/, prisma_1.default.getOptions()];
+                    case 9:
+                        options = _b.sent();
+                        return [4 /*yield*/, prisma_1.default.writePrismaSchema(options)];
+                    case 10:
+                        _b.sent();
+                        return [3 /*break*/, 12];
+                    case 11:
                         console.log("Invalid command provided");
                         process.exit(1);
-                        _b.label = 9;
-                    case 9: return [2 /*return*/];
+                        _b.label = 12;
+                    case 12: return [2 /*return*/];
                 }
             });
         });
