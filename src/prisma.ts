@@ -59,7 +59,8 @@ export default class PrismaCLI {
     }
 
     const enumFile = rawResult.filter(
-      (item) => item.fileName === "enum.prisma"
+      (item) =>
+        item.fileName === "enum.prisma" || item.fileName === "_enum.prisma"
     );
     if (Array.isArray(enumFile) && enumFile.length > 0) {
       result =
@@ -71,8 +72,11 @@ export default class PrismaCLI {
 
     const modelFile = rawResult.filter(
       (item) =>
-        item.fileName !== "base.prisma" && item.fileName !== "enum.prisma"
+        item.fileName !== "base.prisma" &&
+        item.fileName !== "enum.prisma" &&
+        item.fileName !== "_enum.prisma"
     );
+
     if (Array.isArray(modelFile) && modelFile.length > 0) {
       result =
         result +
