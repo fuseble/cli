@@ -42,7 +42,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var openapi_1 = __importDefault(require("./openapi"));
 var terraform_1 = __importDefault(require("./terraform"));
-var template_1 = __importDefault(require("./template"));
+var git_template_1 = __importDefault(require("./git-template"));
 var prisma_1 = __importDefault(require("./prisma"));
 var CLI_COMMANDS = ["template", "openapi", "terraform", "prisma"];
 var CLI = /** @class */ (function () {
@@ -77,10 +77,10 @@ var CLI = /** @class */ (function () {
                             case "prisma": return [3 /*break*/, 8];
                         }
                         return [3 /*break*/, 11];
-                    case 1: return [4 /*yield*/, template_1.default.getOptions()];
+                    case 1: return [4 /*yield*/, git_template_1.default.getOptions()];
                     case 2:
                         options = _b.sent();
-                        return [4 /*yield*/, template_1.default.cloneTemplate(options)];
+                        return [4 /*yield*/, git_template_1.default.cloneTemplate(options)];
                     case 3:
                         _b.sent();
                         return [3 /*break*/, 12];

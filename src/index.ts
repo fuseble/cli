@@ -2,7 +2,7 @@
 
 import OpenAPICLI from "./openapi";
 import TerraformCLI from "./terraform";
-import TemplateCLI from "./template";
+import TemplateCLI from "./git-template";
 import PrismaCLI from "./prisma";
 
 const CLI_COMMANDS: string[] = ["template", "openapi", "terraform", "prisma"];

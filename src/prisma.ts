@@ -74,13 +74,27 @@ export default class PrismaCLI {
       (item) =>
         item.fileName !== "base.prisma" &&
         item.fileName !== "enum.prisma" &&
-        item.fileName !== "_enum.prisma"
+        item.fileName !== "_enum.prisma" &&
+        item.fileName !== "relation.prisma" &&
+        item.fileName !== "_relation.prisma"
     );
-
     if (Array.isArray(modelFile) && modelFile.length > 0) {
       result =
         result +
         modelFile
+          .map((item) => `// ${item.fileName}\n\n${item.text}`)
+          .join("\n\n");
+    }
+
+    const relationFile = rawResult.filter(
+      (item) =>
+        item.fileName === "relation.prisma" ||
+        item.fileName === "_relation.prisma"
+    );
+    if (Array.isArray(relationFile) && relationFile.length > 0) {
+      result =
+        result +
+        relationFile
           .map((item) => `// ${item.fileName}\n\n${item.text}`)
           .join("\n\n");
     }
