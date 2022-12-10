@@ -84,7 +84,7 @@ var CLI = /** @class */ (function () {
                     case 3:
                         _b.sent();
                         return [3 /*break*/, 12];
-                    case 4: return [4 /*yield*/, openapi_1.default.writeOpenAPIFunctions()];
+                    case 4: return [4 /*yield*/, openapi_1.default.init()];
                     case 5:
                         _b.sent();
                         return [3 /*break*/, 12];

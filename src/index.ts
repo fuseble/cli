@@ -39,7 +39,7 @@ class CLI {
         await TemplateCLI.cloneTemplate(options);
         break;
       case "openapi":
-        await OpenAPICLI.writeOpenAPIFunctions();
+        await OpenAPICLI.init();
         break;
       case "terraform":
         options = await TerraformCLI.getOptions();
