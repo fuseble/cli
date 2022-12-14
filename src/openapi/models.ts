@@ -44,12 +44,23 @@ export const parseOpenAPI = (openapi: any) => {
     models.push(model);
   });
 
+  const modelNames = models.map((model) => `'${model.name}'`);
+  const modelMap = models.reduce((acc, curr) => {
+    acc[curr.name] = curr.properties;
+    return acc;
+  }, {} as Record<string, Record<string, any>>);
+
+  result = `export const modelNames = [${modelNames.join(
+    ", "
+  )}] as const;\n\n\n`;
+
+  result += `export const modelMap = ${JSON.stringify(modelMap)};\n\n\n`;
+
   models.forEach((model) => {
     result += `export type ${model.name} = {
 ${Object.entries(model.properties)
   .map(([key, value]) => `  ${key}?: ${value};\n`)
-  .join("")}
-    }\n`;
+  .join("")}}\n\n`;
   });
 
   return result;

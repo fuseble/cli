@@ -4,7 +4,7 @@ import chalk from "chalk";
 import fs from "fs";
 
 import { parseOpenAPI as functionOpenAPI } from "./functions";
-import { parseOpenAPI as modelOpenAPI } from "./models";
+import { parseOpenAPI as schemaOpenAPI } from "./models";
 
 export default class OpenAPICLI {
   public static async init() {
@@ -16,13 +16,11 @@ export default class OpenAPICLI {
         requiresArg: true,
       },
       service: {
-        alias: "s",
         describe: "Create Service",
         type: "boolean",
         requiresArg: false,
       },
-      model: {
-        alias: "m",
+      schema: {
         describe: "Create Schema types",
         type: "boolean",
         requiresArg: false,
@@ -38,8 +36,8 @@ export default class OpenAPICLI {
       await this.writeOpenAPIFunctions(url);
     }
 
-    if (options.model) {
-      await this.writeOpenAPIModels(url);
+    if (options.schema) {
+      await this.writeOpenAPISchemas(url);
     }
   }
 
@@ -73,17 +71,17 @@ export default class OpenAPICLI {
     });
   }
 
-  public static async writeOpenAPIModels(url: string) {
+  public static async writeOpenAPISchemas(url: string) {
     const openapi = await this.getOpenAPI(url);
-    const models = modelOpenAPI(openapi);
+    const schemas = schemaOpenAPI(openapi);
 
-    fs.writeFile("./models.ts", models, (err) => {
+    fs.writeFile("./schemas.ts", schemas, (err) => {
       if (err) {
         console.log(err);
         process.exit(1);
       }
 
-      console.log(`OpenAPI models written to './models.ts'`);
+      console.log(`OpenAPI models written to './schemas.ts'`);
     });
   }
 }

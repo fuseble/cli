@@ -17,7 +17,7 @@ npx fuseble-cli template \
 npx fuseble-cli openapi --url=http://localhost:8000/api-json --service
 
 # create model types
-npx fuseble-cli openapi --url=http://localhost:8000/api-json --model
+npx fuseble-cli openapi --url=http://localhost:8000/api-json --schema
 ```
 
 ## Prisma
