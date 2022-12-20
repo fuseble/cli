@@ -18,6 +18,11 @@ npx fuseble-cli openapi --url=http://localhost:8000/api-json --service
 
 # create model types
 npx fuseble-cli openapi --url=http://localhost:8000/api-json --schema
+
+# create react-hooks with react-query
+npx fuseble-cli openapi --react-hook --url=http://localhost:8000/api-json
+npx fuseble-cli openapi --react-hook --url=http://localhost:8000/api-json --filter-tag=Auth # with OpenAPI Tag Filter
+npx fuseble-cli openapi --react-hook --url=http://localhost:8000/api-json --filter-path=/admin # with OpenAPI Path Filter
 ```
 
 ## Prisma

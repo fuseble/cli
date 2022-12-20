@@ -5,6 +5,7 @@ import fs from "fs";
 
 import { parseOpenAPI as functionOpenAPI } from "./functions";
 import { parseOpenAPI as schemaOpenAPI } from "./models";
+import { parseOpenAPI as reactHookOpenAPI } from "./react-hook";
 
 export default class OpenAPICLI {
   public static async init() {
@@ -25,6 +26,19 @@ export default class OpenAPICLI {
         type: "boolean",
         requiresArg: false,
       },
+      "react-hook": {
+        describe: "Create React Hook",
+        type: "boolean",
+        requiresArg: false,
+      },
+      "filter-tag": {
+        describe: "Filter by tag",
+        type: "string",
+      },
+      "filter-path": {
+        describe: "Filter by path",
+        type: "string",
+      },
     }).argv;
     if (!options.url) {
       console.log(`Please provide a URL`);
@@ -38,6 +52,13 @@ export default class OpenAPICLI {
 
     if (options.schema) {
       await this.writeOpenAPISchemas(url);
+    }
+
+    if (options.reactHook) {
+      await this.writeOpenAPIReactHook(url, {
+        tag: options.filterTag,
+        path: options.filterPath,
+      });
     }
   }
 
@@ -82,6 +103,25 @@ export default class OpenAPICLI {
       }
 
       console.log(`OpenAPI models written to './schemas.ts'`);
+    });
+  }
+
+  public static async writeOpenAPIReactHook(
+    url: string,
+    filter: { tag?: string; path?: string }
+  ) {
+    await this.writeOpenAPIFunctions(url);
+
+    const openapi = await this.getOpenAPI(url);
+    const reactHook = reactHookOpenAPI(openapi, filter);
+
+    fs.writeFile("./useOpenAPIHook.ts", reactHook, (err) => {
+      if (err) {
+        console.log(err);
+        process.exit(1);
+      }
+
+      console.log(`OpenAPI react hook written to './useOpenAPIHook.ts'`);
     });
   }
 }

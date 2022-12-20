@@ -1,6 +1,6 @@
 import camelcase from "camelcase";
 
-const getApiFunctionName = (method: string, url: string) => {
+export const getApiFunctionName = (method: string, url: string) => {
   const splitUrl = url.split("/").map((part) => {
     if (part.includes("{") && part.includes("}")) {
       const param = part.replace("{", "").replace("}", "");
