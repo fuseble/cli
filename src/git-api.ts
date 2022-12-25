@@ -35,10 +35,10 @@ class GitCLI {
       process.exit(1);
     }
 
-    const apiClient = axios.create({
-      baseURL: "https://api.github.com",
-      headers: { Authorization: token && `Bearer ${token}` },
-    });
+    const apiClient = axios.create({ baseURL: "https://api.github.com" });
+    if (token) {
+      apiClient.defaults.headers["Authorization"] = `Bearer ${token}`;
+    }
 
     const contributors: any[] = [];
 
@@ -50,7 +50,15 @@ class GitCLI {
           Accept: "application/vnd.github.v3+json",
         },
       });
-      data.forEach((authorItem: any) => {
+
+      if (!Array.isArray(data)) {
+        console.log(
+          `Github에서 데이터를 가져올 수 없습니다. 다시 시도해주세요.`
+        );
+        process.exit(0);
+      }
+
+      data?.forEach((authorItem: any) => {
         const { author, total, weeks } = authorItem;
         let additions = 0;
         let deletions = 0;
