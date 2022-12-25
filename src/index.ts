@@ -3,9 +3,16 @@
 import OpenAPICLI from "./openapi";
 import TerraformCLI from "./terraform";
 import TemplateCLI from "./git-template";
+import GitCLI from "./git-api";
 import PrismaCLI from "./prisma";
 
-const CLI_COMMANDS: string[] = ["template", "openapi", "terraform", "prisma"];
+const CLI_COMMANDS: string[] = [
+  "template",
+  "openapi",
+  "terraform",
+  "prisma",
+  "git",
+];
 
 class CLI {
   private command: string | undefined;
@@ -48,6 +55,10 @@ class CLI {
       case "prisma":
         options = await PrismaCLI.getOptions();
         await PrismaCLI.writePrismaSchema(options);
+        break;
+      case "git":
+        options = await GitCLI.getOptions();
+        await GitCLI.commits(options);
         break;
       default:
         console.log(`Invalid command provided`);
