@@ -2,6 +2,16 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "baseUrl": "src",
+    "paths": {
+      "@/index": ["index"],
+      "@/utils": ["utils"],
+      "@/openapi": ["openapi"],
+      "@/template": ["template"],
+      "@/github": ["github"],
+      "@/terraform": ["terraform"],
+      "@/files": ["files"]
+    },
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

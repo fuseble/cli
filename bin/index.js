@@ -40,18 +40,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+process.env.DEBUG = 'cli:*';
 var openapi_1 = __importDefault(require("./openapi"));
 var terraform_1 = __importDefault(require("./terraform"));
-var git_template_1 = __importDefault(require("./git-template"));
-var git_api_1 = __importDefault(require("./git-api"));
+var template_1 = __importDefault(require("./template"));
+var github_1 = __importDefault(require("./github"));
 var prisma_1 = __importDefault(require("./prisma"));
-var CLI_COMMANDS = [
-    "template",
-    "openapi",
-    "terraform",
-    "prisma",
-    "git",
-];
+var CLI_COMMANDS = ['template', 'openapi', 'terraform', 'prisma', 'github'];
 var CLI = /** @class */ (function () {
     function CLI() {
         this.validateCommand();
@@ -64,7 +59,7 @@ var CLI = /** @class */ (function () {
             process.exit(1);
         }
         if (!args.some(function (arg) { return CLI_COMMANDS.includes(arg); })) {
-            console.log("Invalid command provided");
+            console.log("Invalid command provided: command types ".concat(CLI_COMMANDS.join(', ')));
             process.exit(1);
         }
         this.command = CLI_COMMANDS.find(function (command) { return args.includes(command); });
@@ -78,48 +73,44 @@ var CLI = /** @class */ (function () {
                         options = {};
                         _a = this.command;
                         switch (_a) {
-                            case "template": return [3 /*break*/, 1];
-                            case "openapi": return [3 /*break*/, 4];
-                            case "terraform": return [3 /*break*/, 6];
-                            case "prisma": return [3 /*break*/, 8];
-                            case "git": return [3 /*break*/, 11];
+                            case 'template': return [3 /*break*/, 1];
+                            case 'openapi': return [3 /*break*/, 3];
+                            case 'terraform': return [3 /*break*/, 5];
+                            case 'prisma': return [3 /*break*/, 7];
+                            case 'github': return [3 /*break*/, 10];
                         }
-                        return [3 /*break*/, 14];
-                    case 1: return [4 /*yield*/, git_template_1.default.getOptions()];
+                        return [3 /*break*/, 13];
+                    case 1: return [4 /*yield*/, template_1.default.init()];
                     case 2:
-                        options = _b.sent();
-                        return [4 /*yield*/, git_template_1.default.cloneTemplate(options)];
-                    case 3:
                         _b.sent();
-                        return [3 /*break*/, 15];
-                    case 4: return [4 /*yield*/, openapi_1.default.init()];
-                    case 5:
+                        return [3 /*break*/, 14];
+                    case 3: return [4 /*yield*/, openapi_1.default.init()];
+                    case 4:
                         _b.sent();
-                        return [3 /*break*/, 15];
-                    case 6: return [4 /*yield*/, terraform_1.default.getOptions()];
-                    case 7:
-                        options = _b.sent();
-                        terraform_1.default.writeTFVars(options);
-                        return [3 /*break*/, 15];
-                    case 8: return [4 /*yield*/, prisma_1.default.getOptions()];
-                    case 9:
+                        return [3 /*break*/, 14];
+                    case 5: return [4 /*yield*/, terraform_1.default.init()];
+                    case 6:
+                        _b.sent();
+                        return [3 /*break*/, 14];
+                    case 7: return [4 /*yield*/, prisma_1.default.getOptions()];
+                    case 8:
                         options = _b.sent();
                         return [4 /*yield*/, prisma_1.default.writePrismaSchema(options)];
-                    case 10:
+                    case 9:
                         _b.sent();
-                        return [3 /*break*/, 15];
-                    case 11: return [4 /*yield*/, git_api_1.default.getOptions()];
-                    case 12:
+                        return [3 /*break*/, 14];
+                    case 10: return [4 /*yield*/, github_1.default.getOptions()];
+                    case 11:
                         options = _b.sent();
-                        return [4 /*yield*/, git_api_1.default.commits(options)];
-                    case 13:
+                        return [4 /*yield*/, github_1.default.commits(options)];
+                    case 12:
                         _b.sent();
-                        return [3 /*break*/, 15];
-                    case 14:
+                        return [3 /*break*/, 14];
+                    case 13:
                         console.log("Invalid command provided");
                         process.exit(1);
-                        _b.label = 15;
-                    case 15: return [2 /*return*/];
+                        _b.label = 14;
+                    case 14: return [2 /*return*/];
                 }
             });
         });

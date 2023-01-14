@@ -1,6 +1,12 @@
 {
   "name": "fuseble-cli",
   "version": "1.2.7",
+  "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "AlpoxDev",
+    "email": "contact@fuseble.com"
+  },
   "main": "bin/index.js",
   "bin": {
     "fuseble-cli": "bin/index.js"
@@ -9,22 +15,17 @@
     "bin",
     "README.md"
   ],
-  "license": "MIT",
-  "private": false,
-  "author": {
-    "email": "contact@fuseble.com",
-    "name": "AlpoxDev"
-  },
   "scripts": {
-    "test": "yarn build && npm i -g",
-    "start": "bin/index.js",
-    "build": "rm -rf bin && tsc",
-    "prepublish": "npm run build"
+    "build": "rm -rf bin && tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
+    "prepublishOnly": "yarn build",
+    "start": "node bin/index.js",
+    "test": "yarn build && yarn start"
   },
   "dependencies": {
     "axios": "^0.27.2",
     "camelcase": "6.3.0",
     "chalk": "4.1.2",
+    "debug": "^4.3.4",
     "execa": "^6.1.0",
     "flat": "^5.0.2",
     "fs-extra": "^10.1.0",
@@ -32,6 +33,7 @@
     "yargs": "^17.5.1"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.7",
     "@types/flat": "^5.0.2",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.0.3",
@@ -39,6 +41,7 @@
     "nodemon": "^2.0.19",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.2",
+    "tsc-alias": "^1.8.2",
     "typescript": "^4.7.4"
   }
 }

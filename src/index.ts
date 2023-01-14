@@ -1,18 +1,13 @@
 #! /usr/bin/env node
+process.env.DEBUG = 'cli:*';
 
-import OpenAPICLI from "./openapi";
-import TerraformCLI from "./terraform";
-import TemplateCLI from "./git-template";
-import GitCLI from "./git-api";
-import PrismaCLI from "./prisma";
+import OpenAPICLI from './openapi';
+import TerraformCLI from '@/terraform';
+import TemplateCLI from '@/template';
+import GithubCLI from '@/github';
+import PrismaCLI from './prisma';
 
-const CLI_COMMANDS: string[] = [
-  "template",
-  "openapi",
-  "terraform",
-  "prisma",
-  "git",
-];
+const CLI_COMMANDS: string[] = ['template', 'openapi', 'terraform', 'prisma', 'github'];
 
 class CLI {
   private command: string | undefined;
@@ -30,7 +25,7 @@ class CLI {
       process.exit(1);
     }
     if (!args.some((arg) => CLI_COMMANDS.includes(arg))) {
-      console.log(`Invalid command provided`);
+      console.log(`Invalid command provided: command types ${CLI_COMMANDS.join(', ')}`);
       process.exit(1);
     }
 
@@ -41,24 +36,22 @@ class CLI {
     let options: any = {};
 
     switch (this.command) {
-      case "template":
-        options = await TemplateCLI.getOptions();
-        await TemplateCLI.cloneTemplate(options);
+      case 'template':
+        await TemplateCLI.init();
         break;
-      case "openapi":
+      case 'openapi':
         await OpenAPICLI.init();
         break;
-      case "terraform":
-        options = await TerraformCLI.getOptions();
-        TerraformCLI.writeTFVars(options);
+      case 'terraform':
+        await TerraformCLI.init();
         break;
-      case "prisma":
+      case 'prisma':
         options = await PrismaCLI.getOptions();
         await PrismaCLI.writePrismaSchema(options);
         break;
-      case "git":
-        options = await GitCLI.getOptions();
-        await GitCLI.commits(options);
+      case 'github':
+        options = await GithubCLI.getOptions();
+        await GithubCLI.commits(options);
         break;
       default:
         console.log(`Invalid command provided`);

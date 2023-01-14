@@ -33,6 +33,24 @@ npx fuseble-cli prisma --path=prisma/modules
 
 ## Terraform
 
+### EC2 ALB
+
+```shell
+yarn test terraform \
+--template=ec2-alb \
+--name=ec2-alb \
+--key-name=root \
+--region=ap-northeast-2 \
+--root-domain=outqource.com \
+--record=test.outqource.com \
+--instance-count=1 \
+--instance-type=t3.micro \
+--vpc-cidr=10.0.0.0/16 \
+--origin-http=3000 \
+--origin-https=8000 \
+--redirect-http=3001-3000
+```
+
 ### ECS Fargate
 
 ```shell

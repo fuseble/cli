@@ -58,15 +58,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getSubdirectoryFromGithub = exports.getFiles = exports.removeFolder = exports.moveFolder = exports.checkFolder = void 0;
 var fs = __importStar(require("fs-extra"));
 var promises_1 = require("fs/promises");
 var child_process_1 = require("child_process");
 var path_1 = require("path");
+var debug_1 = __importDefault(require("debug"));
+var debug = (0, debug_1.default)('cli:template');
 var checkFolder = function (path) {
     if (Array.isArray(path)) {
-        path = path.join("/");
+        path = path.join('/');
     }
     return fs.existsSync(path);
 };
@@ -103,19 +108,19 @@ var getSubdirectoryFromGithub = function (_a) {
     var orgainzation = _a.orgainzation, repository = _a.repository, projectName = _a.projectName, branch = _a.branch, src = _a.src, dest = _a.dest;
     try {
         (0, child_process_1.execSync)("git clone https://github.com/".concat(orgainzation, "/").concat(repository, " ").concat(projectName));
-        if (branch !== "main") {
+        if (branch !== 'main') {
             (0, child_process_1.execSync)("cd ".concat(projectName, " && git checkout ").concat(branch, " && cd ../"));
         }
         var isExist = (0, exports.checkFolder)(src);
         if (!isExist) {
-            throw new Error("Cannot find path in project");
+            throw new Error('Cannot find path in project');
         }
         (0, exports.moveFolder)(src, dest);
         (0, exports.removeFolder)(projectName);
     }
     catch (e) {
         var error = e;
-        console.log((error === null || error === void 0 ? void 0 : error.message) || "Unknown error");
+        debug("Error occoured ".concat((error === null || error === void 0 ? void 0 : error.message) || 'Unknown error'));
         process.exit(1);
     }
 };

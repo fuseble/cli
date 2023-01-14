@@ -1,7 +1,10 @@
-import * as fs from "fs-extra";
-import { readdir } from "fs/promises";
-import { execSync } from "child_process";
-import { resolve } from "path";
+import * as fs from 'fs-extra';
+import { readdir } from 'fs/promises';
+import { execSync } from 'child_process';
+import { resolve } from 'path';
+import getDebug from 'debug';
+
+const debug = getDebug('cli:template');
 
 interface IGetSubdirectoriesFromGithub {
   orgainzation: string;
@@ -14,7 +17,7 @@ interface IGetSubdirectoriesFromGithub {
 
 export const checkFolder = (path: string | string[]): boolean => {
   if (Array.isArray(path)) {
-    path = path.join("/");
+    path = path.join('/');
   }
 
   return fs.existsSync(path);
@@ -36,7 +39,7 @@ export const getFiles = async (dir: string) => {
     dirents.map((dirent) => {
       const res = resolve(dir, dirent.name);
       return dirent.isDirectory() ? getFiles(res) : res;
-    })
+    }),
   );
   return Array.prototype.concat(...files);
 };
@@ -50,24 +53,22 @@ export const getSubdirectoryFromGithub = ({
   dest,
 }: IGetSubdirectoriesFromGithub) => {
   try {
-    execSync(
-      `git clone https://github.com/${orgainzation}/${repository} ${projectName}`
-    );
+    execSync(`git clone https://github.com/${orgainzation}/${repository} ${projectName}`);
 
-    if (branch !== "main") {
+    if (branch !== 'main') {
       execSync(`cd ${projectName} && git checkout ${branch} && cd ../`);
     }
 
     const isExist = checkFolder(src);
     if (!isExist) {
-      throw new Error("Cannot find path in project");
+      throw new Error('Cannot find path in project');
     }
 
     moveFolder(src, dest);
     removeFolder(projectName);
   } catch (e) {
     const error = e as any;
-    console.log(error?.message || "Unknown error");
+    debug(`Error occoured ${error?.message || 'Unknown error'}`);
 
     process.exit(1);
   }
