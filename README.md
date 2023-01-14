@@ -36,7 +36,7 @@ npx fuseble-cli prisma --path=prisma/modules
 ### EC2 ALB
 
 ```shell
-yarn test terraform \
+npx fuseble-cli terraform \
 --template=ec2-alb \
 --name=ec2-alb \
 --key-name=root \
