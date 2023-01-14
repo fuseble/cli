@@ -46,9 +46,9 @@ npx fuseble-cli terraform \
 --instance-count=1 \
 --instance-type=t3.micro \
 --vpc-cidr=10.0.0.0/16 \
---origin-http=3000 \
---origin-https=8000 \
---redirect-http=3001-3000
+--origin-http='' \
+--origin-https=3010 \
+--redirect-http=3010-3000
 ```
 
 ### ECS Fargate
